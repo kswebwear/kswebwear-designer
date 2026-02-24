@@ -5,23 +5,27 @@ export const TEXTURE_SIZE = 2048;
 
 /**
  * UV region pixel coordinates on the 2048x2048 canvas texture.
- * These MUST match the UV layout defined in the Blender model.
- * Front panel occupies the upper half, back panel the lower half.
+ * These MUST match the UV layout baked into the GLB model.
  *
- * If you re-export the GLB with a different UV layout, update these values.
+ * Placeholder model UV layout (generate-placeholder-tshirt.mjs):
+ *   Front body: U[0.12–0.88], V[0.38–0.92] → canvas x[246–1802], y[778–1884]
+ *   Back body:  U[0.12–0.88], V[0.04–0.36] → canvas x[246–1802], y[82–737]
+ *
+ * When a Blender-exported GLB replaces the placeholder, update these values
+ * to match that model's UV layout.
  */
 export const UV_REGIONS: Record<"front" | "back", UVRegion> = {
   front: {
-    x: 307,
-    y: 205,
-    width: 1434,
-    height: 921,
+    x: 246,
+    y: 778,
+    width: 1556,
+    height: 1106,
   },
   back: {
-    x: 307,
-    y: 1331,
-    width: 1434,
-    height: 615,
+    x: 246,
+    y: 82,
+    width: 1556,
+    height: 655,
   },
 };
 
@@ -31,16 +35,16 @@ export const UV_REGIONS: Record<"front" | "back", UVRegion> = {
  */
 export const DESIGN_PLACEMENT: Record<"front" | "back", DesignPlacement> = {
   front: {
-    offsetXRatio: 0.5,   // horizontally centered
-    offsetYRatio: 0.28,  // upper chest area
-    maxWidthRatio: 0.65, // up to 65% of panel width
-    maxHeightRatio: 0.45, // up to 45% of panel height
+    offsetXRatio: 0.5,    // horizontally centered
+    offsetYRatio: 0.65,   // upper chest: V≈0.73 on placeholder model UV layout
+    maxWidthRatio: 0.55,  // up to 55% of panel width
+    maxHeightRatio: 0.38, // up to 38% of panel height
   },
   back: {
     offsetXRatio: 0.5,
-    offsetYRatio: 0.28,
-    maxWidthRatio: 0.65,
-    maxHeightRatio: 0.45,
+    offsetYRatio: 0.55,   // center-upper on back panel
+    maxWidthRatio: 0.55,
+    maxHeightRatio: 0.38,
   },
 };
 
