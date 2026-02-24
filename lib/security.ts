@@ -103,6 +103,7 @@ export function sanitizeSVG(svgText: string): string | null {
 
 /**
  * Validates image dimensions after decoding.
+ * NOTE: Does NOT revoke the URL — caller is responsible for lifecycle.
  */
 function validateImageDimensions(url: string): Promise<ValidationResult> {
   return new Promise((resolve) => {
@@ -121,10 +122,8 @@ function validateImageDimensions(url: string): Promise<ValidationResult> {
       } else {
         resolve({ valid: true });
       }
-      URL.revokeObjectURL(url);
     };
     img.onerror = () => {
-      URL.revokeObjectURL(url);
       resolve({ valid: false, error: "Could not decode image. File may be corrupted." });
     };
     img.src = url;
@@ -188,19 +187,20 @@ export async function validateAndPrepareFile(
     const objectURL = URL.createObjectURL(blob);
     const dimResult = await validateImageDimensions(objectURL);
     if (!dimResult.valid) {
-      URL.revokeObjectURL(objectURL);
+      URL.revokeObjectURL(objectURL); // revoke only on failure; caller owns the URL on success
       return { valid: false, error: dimResult.error! };
     }
-    return { valid: true, objectURL };
+    return { valid: true, objectURL }; // caller (UploadZone) revokes this via prevURLRef
+
   }
 
   // 5. Raster: check dimensions
   const objectURL = URL.createObjectURL(file);
   const dimResult = await validateImageDimensions(objectURL);
   if (!dimResult.valid) {
-    URL.revokeObjectURL(objectURL);
+    URL.revokeObjectURL(objectURL); // revoke only on failure
     return { valid: false, error: dimResult.error! };
   }
 
-  return { valid: true, objectURL };
+  return { valid: true, objectURL }; // caller (UploadZone) revokes this via prevURLRef
 }
