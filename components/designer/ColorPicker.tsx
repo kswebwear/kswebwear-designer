@@ -33,12 +33,12 @@ export function ColorPicker() {
 
   return (
     <div className="space-y-3">
-      <h3 className="text-sm font-inter font-semibold text-gray-700 uppercase tracking-wide">
-        Shirt Color
+      <h3 className="text-sm font-inter font-semibold text-white/60 uppercase tracking-wide">
+        <span className="text-brand-red mr-1.5">2</span>Shirt colour
       </h3>
 
       {/* Preset swatches */}
-      <div className="grid grid-cols-4 gap-3 justify-items-center p-2">
+      <div className="flex flex-wrap gap-3 py-1">
         {TSHIRT_COLOR_PRESETS.map(({ label, hex }) => (
           <button
             key={hex}
@@ -49,10 +49,10 @@ export function ColorPicker() {
               setHexError(false);
             }}
             className={[
-              "relative w-10 h-10 rounded-full border-2 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-red focus-visible:ring-offset-2",
+              "relative w-10 h-10 rounded-full border-2 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-red focus-visible:ring-offset-2 focus-visible:ring-offset-[#14141f]",
               baseColor === hex
                 ? "border-brand-red scale-110 shadow-md"
-                : "border-gray-200 hover:scale-105 hover:border-gray-400",
+                : "border-white/20 hover:scale-105 hover:border-white/60",
             ].join(" ")}
             style={{ backgroundColor: hex }}
             aria-label={`Select ${label} color`}
@@ -74,7 +74,7 @@ export function ColorPicker() {
       {/* Custom hex input */}
       <div className="flex items-center gap-2">
         <div
-          className="w-8 h-8 rounded border border-gray-200 flex-shrink-0 transition-colors"
+          className="w-8 h-8 rounded-full border border-white/20 flex-shrink-0 transition-colors"
           style={{ backgroundColor: baseColor }}
           aria-hidden="true"
         />
@@ -85,8 +85,8 @@ export function ColorPicker() {
           placeholder="#FFFFFF"
           maxLength={7}
           className={[
-            "flex-1 text-sm font-mono px-3 py-1.5 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-red/50 transition-colors",
-            hexError ? "border-red-400 bg-red-50" : "border-gray-200 bg-white",
+            "flex-1 text-sm font-mono text-white px-3 py-1.5 border rounded-full focus:outline-none focus:ring-2 focus:ring-brand-red/50 transition-colors",
+            hexError ? "border-red-400 bg-red-950/40" : "border-white/15 bg-white/5",
           ].join(" ")}
           aria-label="Custom hex color"
           aria-invalid={hexError}

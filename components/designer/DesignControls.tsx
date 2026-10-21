@@ -1,6 +1,5 @@
 "use client";
 
-import { ViewToggle } from "@/components/designer/ViewToggle";
 import { ColorPicker } from "@/components/designer/ColorPicker";
 import { UploadZone } from "@/components/designer/UploadZone";
 import { MessageCircle } from "lucide-react";
@@ -27,25 +26,19 @@ export function DesignControls() {
     <div className="flex flex-col gap-5 h-full overflow-y-auto">
       {/* Header */}
       <div>
-        <h2 className="font-sora font-bold text-xl text-brand-dark">
+        <h2 className="font-sora font-bold text-xl text-white">
           Customise
         </h2>
-        <p className="text-sm text-brand-muted font-inter mt-1">
-          Upload your artwork and choose a colour.
+        <p className="text-sm text-white/60 font-inter mt-1">
+          Preview your artwork on a 3D tee, then order on WhatsApp.
         </p>
       </div>
-
-      {/* View toggle */}
-      <ViewToggle />
-
-      {/* Divider */}
-      <div className="h-px bg-gray-100" />
 
       {/* Upload zone */}
       <UploadZone />
 
       {/* Divider */}
-      <div className="h-px bg-gray-100" />
+      <div className="h-px bg-white/10" />
 
       {/* Color picker */}
       <ColorPicker />
@@ -58,7 +51,7 @@ export function DesignControls() {
         {WHATSAPP_NUMBER ? (
           <button
             onClick={handleWhatsApp}
-            className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1fb855] text-white font-inter font-semibold py-3 px-4 rounded-xl transition-colors duration-200 shadow-sm"
+            className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1fb855] text-white font-sora font-semibold py-3 px-4 rounded-full transition-colors duration-200"
             aria-label="Order via WhatsApp"
           >
             <MessageCircle className="w-5 h-5" />
@@ -66,17 +59,17 @@ export function DesignControls() {
           </button>
         ) : (
           <a
-            href="https://kswebwear.com.au"
+            href="https://www.kswebwear.com.au"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full flex items-center justify-center gap-2 bg-brand-navy text-white font-inter font-semibold py-3 px-4 rounded-xl"
+            className="w-full flex items-center justify-center gap-2 bg-white text-brand-dark font-sora font-semibold py-3 px-4 rounded-full"
           >
             Contact us to order
           </a>
         )}
 
-        <p className="text-center text-xs text-gray-400 font-inter">
-          Your design is never uploaded to our servers.
+        <p className="text-center text-xs text-white/40 font-inter">
+          Your design stays on your device. Minimum 2 shirts.
         </p>
       </div>
     </div>

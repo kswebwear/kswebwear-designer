@@ -82,8 +82,8 @@ export function UploadZone() {
 
   return (
     <div className="space-y-3">
-      <h3 className="text-sm font-inter font-semibold text-gray-700 uppercase tracking-wide">
-        Your Design
+      <h3 className="text-sm font-inter font-semibold text-white/60 uppercase tracking-wide">
+        <span className="text-brand-red mr-1.5">1</span>Your design
       </h3>
 
       {!designImageURL ? (
@@ -98,34 +98,30 @@ export function UploadZone() {
           onKeyDown={(e) => e.key === "Enter" && inputRef.current?.click()}
           aria-label="Upload design image"
           className={[
-            "relative border-2 border-dashed rounded-xl p-6 flex flex-col items-center gap-3 cursor-pointer transition-all duration-200",
+            "relative border-2 border-dashed rounded-2xl p-5 flex flex-col items-center gap-2 cursor-pointer transition-all duration-200",
             isDragging
               ? "border-brand-red bg-brand-red/5 scale-[1.01]"
-              : "border-gray-300 hover:border-brand-red/60 hover:bg-gray-50",
+              : "border-white/20 hover:border-brand-red/70 hover:bg-white/5",
             isProcessing ? "pointer-events-none opacity-60" : "",
           ].join(" ")}
         >
-          <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center">
+          <div className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center">
             {isProcessing ? (
               <div className="w-5 h-5 rounded-full border-2 border-gray-300 border-t-brand-red animate-spin" />
             ) : (
-              <Upload className="w-5 h-5 text-gray-400" />
+              <Upload className="w-5 h-5 text-white/60" />
             )}
           </div>
 
           <div className="text-center">
-            <p className="text-sm font-inter font-medium text-gray-700">
+            <p className="text-sm font-inter font-medium text-white">
               {isProcessing ? "Processing…" : "Drop your design here"}
             </p>
-            <p className="text-xs text-gray-400 mt-0.5">or click to browse</p>
+            <p className="text-xs text-white/50 mt-0.5">or click to browse</p>
           </div>
 
-          <p className="text-xs text-gray-400">PNG, JPG or SVG · Max 10MB</p>
+          <p className="text-xs text-white/40">PNG, JPG or SVG · Max 10MB</p>
 
-          {/* Privacy note */}
-          <p className="text-xs text-gray-400 italic">
-            Your design stays on your device
-          </p>
 
           <input
             ref={inputRef}
@@ -138,9 +134,9 @@ export function UploadZone() {
         </div>
       ) : (
         /* Design preview */
-        <div className="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-xl">
+        <div className="flex items-center gap-3 p-3 bg-white/5 border border-white/10 rounded-2xl">
           {/* Thumbnail */}
-          <div className="w-14 h-14 rounded-lg overflow-hidden border border-gray-200 bg-white flex-shrink-0">
+          <div className="w-14 h-14 rounded-lg overflow-hidden border border-white/10 bg-white flex-shrink-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={designImageURL}
@@ -150,7 +146,7 @@ export function UploadZone() {
           </div>
 
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-inter font-medium text-gray-800 truncate">
+            <p className="text-sm font-inter font-medium text-white truncate">
               {designFileName || "Design"}
             </p>
             <button
@@ -164,9 +160,9 @@ export function UploadZone() {
           <button
             onClick={handleClear}
             aria-label="Remove design"
-            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 transition-colors flex-shrink-0"
+            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors flex-shrink-0"
           >
-            <X className="w-4 h-4 text-gray-500" />
+            <X className="w-4 h-4 text-white/60" />
           </button>
 
           <input
@@ -184,10 +180,10 @@ export function UploadZone() {
       {error && (
         <div
           role="alert"
-          className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-lg"
+          className="flex items-start gap-2 p-3 bg-red-950/40 border border-red-500/40 rounded-lg"
         >
           <ImageIcon className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
-          <p className="text-xs text-red-600">{error}</p>
+          <p className="text-xs text-red-300">{error}</p>
         </div>
       )}
     </div>

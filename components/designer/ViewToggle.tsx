@@ -13,16 +13,16 @@ export function ViewToggle() {
   ];
 
   return (
-    <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-lg w-full">
+    <div className="flex items-center gap-1 bg-black/50 backdrop-blur p-1 rounded-full w-full border border-white/10">
       {views.map(({ id, label }) => (
         <button
           key={id}
           onClick={() => setActiveView(id)}
           className={[
-            "flex-1 py-2 px-4 rounded-md text-sm font-inter font-medium transition-all duration-200",
+            "flex-1 py-2 px-4 rounded-full text-sm font-inter font-medium transition-all duration-200",
             activeView === id
               ? "bg-brand-red text-white shadow-sm"
-              : "text-gray-600 hover:text-gray-900 hover:bg-white/60",
+              : "text-white/70 hover:text-white",
           ].join(" ")}
           aria-pressed={activeView === id}
         >

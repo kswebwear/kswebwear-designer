@@ -43,15 +43,15 @@ export function TShirtViewer({
   onModelLoaded,
 }: TShirtViewerProps) {
   return (
-    <div className="relative w-full h-full rounded-xl overflow-hidden bg-gradient-to-br from-slate-100 via-gray-50 to-slate-200">
+    <div className="relative w-full h-full overflow-hidden bg-[#2b2d3a]">
       <ErrorBoundary>
         <Canvas
-          camera={{ position: [0, 0.1, 2.8], fov: 45 }}
+          camera={{ position: [0, 0, 3.6], fov: 45 }}
           shadows
           gl={{ antialias: true, alpha: false }}
           dpr={[1, 2]}
         >
-          <color attach="background" args={["#f4f5f7"]} />
+          <color attach="background" args={["#2b2d3a"]} />
 
           <Lights />
 
@@ -68,7 +68,7 @@ export function TShirtViewer({
             enablePan={false}
             enableZoom={true}
             minDistance={1.8}
-            maxDistance={4.5}
+            maxDistance={5}
             minPolarAngle={Math.PI / 4}
             maxPolarAngle={(3 * Math.PI) / 4}
             minAzimuthAngle={-Math.PI / 5}
