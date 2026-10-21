@@ -47,7 +47,7 @@ export function DesignControls() {
       <div className="flex-1" />
 
       {/* CTA buttons */}
-      <div className="space-y-3 pt-2">
+      <div className="space-y-3 pt-2 max-lg:fixed max-lg:inset-x-0 max-lg:bottom-0 max-lg:z-30 max-lg:p-3 max-lg:space-y-0 max-lg:bg-[#0b0b12]/95 max-lg:backdrop-blur max-lg:border-t max-lg:border-white/10">
         {WHATSAPP_NUMBER ? (
           <button
             onClick={handleWhatsApp}
@@ -68,7 +68,7 @@ export function DesignControls() {
           </a>
         )}
 
-        <p className="text-center text-xs text-white/40 font-inter">
+        <p className="text-center text-xs text-white/40 font-inter max-lg:hidden">
           Your design stays on your device. Minimum 2 shirts.
         </p>
       </div>

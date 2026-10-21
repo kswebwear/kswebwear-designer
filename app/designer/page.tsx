@@ -34,7 +34,7 @@ export default function DesignerPage() {
         </div>
       </header>
 
-      <div className="section-container w-full flex-1 min-h-0 py-4 lg:py-5">
+      <div className="section-container w-full flex-1 min-h-0 py-4 pb-24 lg:py-5">
         <h1 className="sr-only">T-Shirt Designer</h1>
         <Suspense
           fallback={<div className="w-full h-[600px] bg-white/5 rounded-3xl animate-pulse" />}
