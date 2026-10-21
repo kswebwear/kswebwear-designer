@@ -38,7 +38,7 @@ export function ColorPicker() {
       </h3>
 
       {/* Preset swatches */}
-      <div className="flex flex-wrap gap-3 py-1">
+      <div className="flex flex-wrap gap-3 p-1.5">
         {TSHIRT_COLOR_PRESETS.map(({ label, hex }) => (
           <button
             key={hex}
