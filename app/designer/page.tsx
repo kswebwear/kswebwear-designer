@@ -21,9 +21,9 @@ export default function DesignerPage() {
             </span>
           </a>
           <nav className="hidden md:flex items-center gap-7 text-sm font-inter text-white/80">
-            <a href="https://www.kswebwear.com.au/#services" className="hover:text-white transition-colors">Services</a>
-            <a href="https://www.kswebwear.com.au/#work" className="hover:text-white transition-colors">Our Work</a>
-            <a href="https://www.kswebwear.com.au/#faq" className="hover:text-white transition-colors">FAQ</a>
+            <a href="https://www.kswebwear.com.au/services" className="hover:text-white transition-colors">Services</a>
+            <a href="https://www.kswebwear.com.au/portfolio" className="hover:text-white transition-colors">Our Work</a>
+            <a href="https://www.kswebwear.com.au/faq" className="hover:text-white transition-colors">FAQ</a>
           </nav>
           <a
             href="https://www.kswebwear.com.au"
