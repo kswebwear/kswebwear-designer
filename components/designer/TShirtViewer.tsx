@@ -2,14 +2,14 @@
 
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, AccumulativeShadows, RandomizedLight } from "@react-three/drei";
-import * as THREE from "three";
+import { OrbitControls } from "@react-three/drei";
 import { TShirtModel } from "@/components/designer/TShirtModel";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 import type { ActiveView } from "@/types/designer";
 
 interface TShirtViewerProps {
-  canvasTexture: THREE.CanvasTexture | null;
+  baseColor: string;
+  designImageURL: string | null;
   activeView: ActiveView;
   onModelLoaded?: () => void;
 }
@@ -36,18 +36,9 @@ function Lights() {
   );
 }
 
-/** Simple plane to catch shadows under the shirt */
-function ShadowPlane() {
-  return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.05, 0]} receiveShadow>
-      <planeGeometry args={[6, 6]} />
-      <shadowMaterial transparent opacity={0.18} />
-    </mesh>
-  );
-}
-
 export function TShirtViewer({
-  canvasTexture,
+  baseColor,
+  designImageURL,
   activeView,
   onModelLoaded,
 }: TShirtViewerProps) {
@@ -63,11 +54,11 @@ export function TShirtViewer({
           <color attach="background" args={["#f4f5f7"]} />
 
           <Lights />
-          <ShadowPlane />
 
           <Suspense fallback={null}>
             <TShirtModel
-              canvasTexture={canvasTexture}
+              baseColor={baseColor}
+              designImageURL={designImageURL}
               activeView={activeView}
               onLoaded={onModelLoaded}
             />

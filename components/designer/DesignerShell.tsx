@@ -4,7 +4,6 @@ import { useState, useCallback } from "react";
 import { TShirtViewer } from "@/components/designer/TShirtViewer";
 import { DesignControls } from "@/components/designer/DesignControls";
 import { LoadingOverlay } from "@/components/designer/LoadingOverlay";
-import { useCanvasTexture } from "@/hooks/useCanvasTexture";
 import { useDesignerStore } from "@/store/designerStore";
 
 export function DesignerShell() {
@@ -14,9 +13,6 @@ export function DesignerShell() {
   const isLoading = useDesignerStore((s) => s.isLoading);
   const setIsLoading = useDesignerStore((s) => s.setIsLoading);
 
-  // This hook manages the canvas texture — it doesn't unmount when activeView changes
-  const canvasTexture = useCanvasTexture(baseColor, designImageURL, activeView);
-
   const handleModelLoaded = useCallback(() => {
     setIsLoading(false);
   }, [setIsLoading]);
@@ -24,9 +20,10 @@ export function DesignerShell() {
   return (
     <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 w-full h-full min-h-[600px]">
       {/* 3D Viewer panel */}
-      <div className="relative flex-1 min-h-[380px] lg:min-h-0 rounded-xl overflow-hidden">
+      <div className="relative flex-none h-[440px] lg:flex-1 lg:h-auto lg:min-h-0 rounded-xl overflow-hidden">
         <TShirtViewer
-          canvasTexture={canvasTexture}
+          baseColor={baseColor}
+          designImageURL={designImageURL}
           activeView={activeView}
           onModelLoaded={handleModelLoaded}
         />

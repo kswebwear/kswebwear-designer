@@ -71,7 +71,7 @@ export default function DesignerPage() {
             {
               step: "3",
               title: "Order",
-              desc: "Happy with the preview? Hit 'Order via WhatsApp' to get in touch.",
+              desc: "Happy with the preview? Use the order button to get in touch with us.",
             },
           ].map(({ step, title, desc }) => (
             <div
