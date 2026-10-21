@@ -38,7 +38,7 @@ export function ColorPicker() {
       </h3>
 
       {/* Preset swatches */}
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-4 gap-3 justify-items-center p-2">
         {TSHIRT_COLOR_PRESETS.map(({ label, hex }) => (
           <button
             key={hex}

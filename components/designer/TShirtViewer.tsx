@@ -18,18 +18,18 @@ function Lights() {
   return (
     <>
       {/* Key light — warm from upper-right */}
-      <directionalLight position={[3, 5, 3]} intensity={1.4} castShadow
+      <directionalLight position={[3, 5, 3]} intensity={2.0} castShadow
         shadow-mapSize-width={1024} shadow-mapSize-height={1024}
         shadow-camera-near={0.1} shadow-camera-far={20}
         shadow-camera-left={-3} shadow-camera-right={3}
         shadow-camera-top={3} shadow-camera-bottom={-3}
       />
       {/* Fill light — cool from upper-left */}
-      <directionalLight position={[-3, 3, -2]} intensity={0.5} />
+      <directionalLight position={[-3, 3, -2]} intensity={0.8} />
       {/* Rim light — from behind */}
       <directionalLight position={[0, 1, -4]} intensity={0.3} color="#c8d8f0" />
       {/* Ambient — soft overall fill */}
-      <ambientLight intensity={0.55} />
+      <ambientLight intensity={1.1} />
       {/* Subtle hemisphere: sky blue top, warm ground */}
       <hemisphereLight args={["#d0e8ff", "#f0e8d8", 0.4]} />
     </>
