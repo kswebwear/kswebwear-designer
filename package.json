@@ -13,13 +13,13 @@
   "license": "ISC",
   "description": "Interactive 3D T-Shirt Designer",
   "dependencies": {
-    "@react-three/drei": "^9.122.0",
-    "@react-three/fiber": "^8.18.0",
+    "@react-three/drei": "^10.0.0",
+    "@react-three/fiber": "^9.0.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.575.0",
-    "next": "^14.2.35",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "next": "^16.4.3",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "tailwind-merge": "^3.5.0",
     "three": "^0.165.0",
     "zustand": "^4.5.7"

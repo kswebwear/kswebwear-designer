@@ -73,22 +73,44 @@ export function sanitizeSVG(svgText: string): string | null {
     return null;
   }
 
+  if (doc.documentElement.localName !== "svg") {
+    return null;
+  }
+
   // Remove dangerous elements
-  const dangerousElements = ["script", "foreignObject", "use", "iframe"];
+  const dangerousElements = [
+    "script",
+    "foreignObject",
+    "use",
+    "iframe",
+    "animate",
+    "set",
+    "animateTransform",
+    "animateMotion",
+  ];
   dangerousElements.forEach((tag) => {
     doc.querySelectorAll(tag).forEach((el) => el.remove());
   });
 
-  // Remove all on* event attributes and dangerous attributes from every element
+  // Keep <style> for legitimate exports, but drop it if it can fetch anything
+  doc.querySelectorAll("style").forEach((el) => {
+    if (/url\(\s*['"]?(?!#)|@import/i.test(el.textContent ?? "")) el.remove();
+  });
+
+  // Remove event handlers, external references and CSS that can fetch resources
   const allElements = doc.querySelectorAll("*");
   allElements.forEach((el) => {
     const attrsToRemove: string[] = [];
     for (let i = 0; i < el.attributes.length; i++) {
       const attr = el.attributes[i];
+      const name = attr.name.toLowerCase();
+      const value = attr.value.trim().toLowerCase();
+      const isRef = name === "href" || name === "xlink:href";
       if (
-        attr.name.startsWith("on") ||       // event handlers
-        attr.name === "href" && attr.value.startsWith("javascript:") ||
-        attr.name === "xlink:href" && attr.value.startsWith("javascript:")
+        name.startsWith("on") ||
+        (isRef && !/^(#|data:image\/(png|jpe?g|gif|webp);base64,)/.test(value)) ||
+        (name === "style" && /url\(\s*['"]?(?!#)|expression\(|@import/.test(value)) ||
+        /^\s*url\(\s*['"]?(?!#)/.test(value)
       ) {
         attrsToRemove.push(attr.name);
       }

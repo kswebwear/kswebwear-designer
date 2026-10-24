@@ -6,6 +6,7 @@ import { UploadZone } from "@/components/designer/UploadZone";
 import { MessageCircle } from "lucide-react";
 import { useDesignerStore } from "@/store/designerStore";
 import { TSHIRT_COLOR_PRESETS } from "@/lib/constants";
+import { sanitizeFileName } from "@/lib/security";
 
 const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
 
@@ -21,7 +22,7 @@ export function DesignControls() {
     const printLines = (["front", "back"] as const).flatMap((side) =>
       (["design", "logo"] as const).flatMap((kind) => {
         const layer = layers[side][kind];
-        return layer ? [`${side} ${kind}: ${layer.fileName}`] : [];
+        return layer ? [`${side} ${kind}: ${sanitizeFileName(layer.fileName)}`] : [];
       })
     );
     const details = [`Shirt colour: ${colourName}`, ...printLines].join("\n");
