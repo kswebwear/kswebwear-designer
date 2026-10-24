@@ -9,7 +9,7 @@ import { useDesignerStore } from "@/store/designerStore";
 
 export function DesignerShell() {
   const baseColor = useDesignerStore((s) => s.baseColor);
-  const designImageURL = useDesignerStore((s) => s.designImageURL);
+  const layers = useDesignerStore((s) => s.layers);
   const activeView = useDesignerStore((s) => s.activeView);
   const isLoading = useDesignerStore((s) => s.isLoading);
   const setIsLoading = useDesignerStore((s) => s.setIsLoading);
@@ -24,13 +24,13 @@ export function DesignerShell() {
       <div className="relative flex-none h-[440px] lg:flex-1 lg:h-auto lg:min-h-0 rounded-3xl overflow-hidden border border-white/10">
         <TShirtViewer
           baseColor={baseColor}
-          designImageURL={designImageURL}
+          layers={layers}
           activeView={activeView}
           onModelLoaded={handleModelLoaded}
         />
         {isLoading && <LoadingOverlay />}
         <p className="hidden sm:block absolute top-4 left-5 text-xs font-inter text-white/50 pointer-events-none">
-          Drag to rotate · scroll to zoom
+          Drag to rotate · scroll or +/− to zoom
         </p>
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-48 z-10">
           <ViewToggle />

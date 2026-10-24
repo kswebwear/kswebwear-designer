@@ -1,7 +1,7 @@
 "use client";
 
 import { ColorPicker } from "@/components/designer/ColorPicker";
-import { PrintSize } from "@/components/designer/PrintSize";
+import { LogoSection } from "@/components/designer/LogoSection";
 import { UploadZone } from "@/components/designer/UploadZone";
 import { MessageCircle } from "lucide-react";
 import { useDesignerStore } from "@/store/designerStore";
@@ -11,17 +11,20 @@ const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
 
 export function DesignControls() {
   const baseColor = useDesignerStore((s) => s.baseColor);
-  const designFileName = useDesignerStore((s) => s.designFileName);
+  const layers = useDesignerStore((s) => s.layers);
   const activeView = useDesignerStore((s) => s.activeView);
-  const printSize = useDesignerStore((s) => s.printSize);
 
   const colourName = TSHIRT_COLOR_PRESETS.find((c) => c.hex === baseColor)?.label ?? baseColor;
 
   const handleWhatsApp = () => {
     if (!WHATSAPP_NUMBER) return;
-    const details = [`Shirt colour: ${colourName}`, designFileName ? `Print: ${activeView}, ${printSize}` : null, designFileName ? `Design file: ${designFileName}` : null]
-      .filter(Boolean)
-      .join("\n");
+    const printLines = (["front", "back"] as const).flatMap((side) =>
+      (["design", "logo"] as const).flatMap((kind) => {
+        const layer = layers[side][kind];
+        return layer ? [`${side} ${kind}: ${layer.fileName}`] : [];
+      })
+    );
+    const details = [`Shirt colour: ${colourName}`, ...printLines].join("\n");
     const message = encodeURIComponent(
       `Hi! I used the KS Webwear Designer to create a custom t-shirt design. I'd like to place an order. 👕\n${details}`
     );
@@ -29,7 +32,7 @@ export function DesignControls() {
   };
 
   return (
-    <div className="flex flex-col gap-4 h-full overflow-y-auto">
+    <div className="flex flex-col gap-4 h-full overflow-y-auto lg:-mr-4 lg:pr-4 [scrollbar-gutter:stable] [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.2)_transparent]">
       {/* Header */}
       <div>
         <h2 className="font-sora font-bold text-xl text-white">
@@ -38,7 +41,11 @@ export function DesignControls() {
       </div>
 
       {/* Upload zone */}
-      <UploadZone />
+      <p className="text-xs font-inter text-white/60">
+        Editing the <span className="font-semibold text-white capitalize">{activeView}</span> of the shirt. Drag a print to move it, or its red corner dot to resize. Use the Front / Back switch to change sides.
+      </p>
+      <UploadZone kind="design" />
+      <LogoSection key={activeView} />
 
       {/* Divider */}
       <div className="h-px bg-white/10" />
@@ -46,18 +53,11 @@ export function DesignControls() {
       {/* Color picker */}
       <ColorPicker />
 
-      {designFileName && (
-        <>
-          <div className="h-px bg-white/10" />
-          <PrintSize />
-        </>
-      )}
-
       {/* Spacer */}
       <div className="flex-1" />
 
       {/* CTA buttons */}
-      <div className="space-y-3 pt-2 max-lg:fixed max-lg:inset-x-0 max-lg:bottom-0 max-lg:z-30 max-lg:p-3 max-lg:space-y-0 max-lg:bg-[#0b0b12]/95 max-lg:backdrop-blur max-lg:border-t max-lg:border-white/10">
+      <div className="space-y-3 pt-2 lg:sticky lg:bottom-0 lg:bg-[#14141f] max-lg:fixed max-lg:inset-x-0 max-lg:bottom-0 max-lg:z-30 max-lg:p-3 max-lg:space-y-0 max-lg:bg-[#0b0b12]/95 max-lg:backdrop-blur max-lg:border-t max-lg:border-white/10">
         {WHATSAPP_NUMBER ? (
           <button
             onClick={handleWhatsApp}

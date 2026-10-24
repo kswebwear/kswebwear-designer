@@ -1,6 +1,20 @@
 export type ActiveView = "front" | "back";
 
-export type PrintSize = "small" | "medium" | "large";
+export type LayerKind = "design" | "logo";
+
+export interface Layer {
+  url: string;
+  fileName: string;
+  /** Design uses the whole front/back panel (image scaled to the largest size that fits, never cropped) */
+  full: boolean;
+  /** Fraction (0–1) of the largest size that fits the print area */
+  size: number;
+  /** Centre offset in model units, in screen terms (+x right, +y up) */
+  x: number;
+  y: number;
+}
+
+export type SideLayers = Partial<Record<LayerKind, Layer>>;
 
 export interface ColorPreset {
   label: string;
@@ -28,18 +42,16 @@ export interface ValidationResult {
 
 export interface DesignerState {
   baseColor: string;
-  designImageURL: string | null;
-  designFileName: string | null;
+  layers: Record<ActiveView, SideLayers>;
   activeView: ActiveView;
-  printSize: PrintSize;
   isLoading: boolean;
 }
 
 export interface DesignerActions {
   setBaseColor: (color: string) => void;
-  setDesignImage: (url: string | null, fileName: string | null) => void;
+  setLayerImage: (side: ActiveView, kind: LayerKind, url: string, fileName: string) => void;
+  updateLayer: (side: ActiveView, kind: LayerKind, patch: Partial<Pick<Layer, "size" | "x" | "y" | "full">>) => void;
+  clearLayer: (side: ActiveView, kind: LayerKind) => void;
   setActiveView: (view: ActiveView) => void;
-  setPrintSize: (size: PrintSize) => void;
   setIsLoading: (loading: boolean) => void;
-  clearDesign: () => void;
 }

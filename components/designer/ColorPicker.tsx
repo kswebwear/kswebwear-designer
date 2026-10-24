@@ -34,7 +34,7 @@ export function ColorPicker() {
   return (
     <div className="space-y-3">
       <h3 className="text-sm font-inter font-semibold text-white/60 uppercase tracking-wide">
-        <span className="text-brand-red mr-1.5">2</span>Shirt colour
+        <span className="text-brand-red mr-1.5">3</span>Shirt colour
       </h3>
 
       {/* Preset swatches */}
@@ -82,6 +82,10 @@ export function ColorPicker() {
           type="text"
           value={hexInput || baseColor}
           onChange={handleHexChange}
+          onBlur={() => {
+            setHexInput("");
+            setHexError(false);
+          }}
           placeholder="#FFFFFF"
           maxLength={7}
           className={[
