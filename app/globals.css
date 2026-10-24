@@ -3,53 +3,43 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --font-sora: 'Sora', sans-serif;
-    --font-inter: 'Inter', sans-serif;
-  }
-
   html {
     scroll-behavior: smooth;
   }
 
   body {
-    color-scheme: dark;
-    @apply bg-brand-offwhite text-brand-dark font-inter antialiased;
+    @apply bg-ks-paper font-ks-sans text-ks-ink antialiased;
   }
 
   * {
     box-sizing: border-box;
   }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  label:focus-within {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
 }
 
 @layer components {
-  .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 bg-brand-red hover:bg-red-700 text-white font-inter font-semibold py-3 px-6 rounded-xl transition-colors duration-200 shadow-sm;
+  .ks-container {
+    @apply mx-auto w-full max-w-ks-wide px-ks-gutter;
   }
 
-  .card {
-    @apply bg-white rounded-2xl p-6 shadow-sm border border-gray-100;
+  .ks-display {
+    @apply font-black leading-[0.95] tracking-[-0.03em];
+    font-stretch: var(--ks-display-stretch);
   }
 
-  .section-container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  .ks-title {
+    @apply font-extrabold;
+    font-stretch: var(--ks-title-stretch);
   }
 
-  .section-padding {
-    @apply py-12 lg:py-20;
+  .ks-label {
+    @apply font-ks-mono text-ks-label uppercase tracking-[0.08em];
   }
-}
-
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 rounded-full;
-}
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-400;
 }

@@ -1,6 +1,6 @@
 /**
  * Security utilities for file upload validation.
- * All validation is client-side only — no files are ever sent to a server.
+ * All validation is client-side only - no files are ever sent to a server.
  */
 
 import {
@@ -32,7 +32,7 @@ async function readMagicBytes(file: File, count: number): Promise<Uint8Array> {
 async function detectImageFormat(
   file: File
 ): Promise<"png" | "jpeg" | "svg" | null> {
-  // SVG is text-based — check MIME type and content
+  // SVG is text-based - check MIME type and content
   if (file.type === "image/svg+xml") {
     return "svg";
   }
@@ -125,7 +125,7 @@ export function sanitizeSVG(svgText: string): string | null {
 
 /**
  * Validates image dimensions after decoding.
- * NOTE: Does NOT revoke the URL — caller is responsible for lifecycle.
+ * NOTE: Does NOT revoke the URL - caller is responsible for lifecycle.
  */
 function validateImageDimensions(url: string): Promise<ValidationResult> {
   return new Promise((resolve) => {

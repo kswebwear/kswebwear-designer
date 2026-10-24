@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
-import { Upload, X, Image as ImageIcon } from "lucide-react";
+import { Upload, X } from "lucide-react";
 import { useDesignerStore } from "@/store/designerStore";
 import { useFileValidation } from "@/hooks/useFileValidation";
 import { sanitizeFileName } from "@/lib/security";
@@ -9,11 +9,11 @@ import { areaCenter, DEFAULT_LAYER, FULL_AREA, MIN_LAYER_SIZE } from "@/lib/prin
 import type { LayerKind } from "@/types/designer";
 
 const COPY = {
-  design: { step: "1", title: "Your design", drop: "Drop your design here", alt: "Design preview" },
-  logo: { step: "2", title: "Logo (optional)", drop: "Add your logo", alt: "Logo preview" },
+  design: { title: "Your design", drop: "Drop an image or", alt: "Design preview" },
+  logo: { title: "Logo", drop: "Drop your logo or", alt: "Logo preview" },
 } as const;
 
-export function UploadZone({ kind, hideTitle = false }: { kind: LayerKind; hideTitle?: boolean }) {
+export function UploadZone({ kind }: { kind: LayerKind }) {
   const side = useDesignerStore((s) => s.activeView);
   const layer = useDesignerStore((s) => s.layers[s.activeView][kind]);
   const setLayerImage = useDesignerStore((s) => s.setLayerImage);
@@ -84,15 +84,8 @@ export function UploadZone({ kind, hideTitle = false }: { kind: LayerKind; hideT
   }, [clearLayer, side, kind]);
 
   return (
-    <div className="space-y-3">
-      {!hideTitle && (
-        <h3 className="text-sm font-inter font-semibold text-white/60 uppercase tracking-wide">
-          <span className="text-brand-red mr-1.5">{copy.step}</span>{copy.title}
-        </h3>
-      )}
-
+    <div className="flex flex-col gap-3">
       {!designImageURL ? (
-        /* Drop zone */
         <div
           onDrop={handleDrop}
           onDragOver={handleDragOver}
@@ -100,74 +93,60 @@ export function UploadZone({ kind, hideTitle = false }: { kind: LayerKind; hideT
           onClick={() => inputRef.current?.click()}
           role="button"
           tabIndex={0}
-          onKeyDown={(e) => e.key === "Enter" && inputRef.current?.click()}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              inputRef.current?.click();
+            }
+          }}
           aria-label={`Upload ${kind} image`}
           className={[
-            "relative border-2 border-dashed rounded-2xl p-5 flex flex-col items-center gap-2 cursor-pointer transition-all duration-200",
-            isDragging
-              ? "border-brand-red bg-brand-red/5 scale-[1.01]"
-              : "border-white/20 hover:border-brand-red/70 hover:bg-white/5",
+            "flex min-h-28 cursor-pointer flex-col items-center justify-center gap-1.5 border-[1.5px] border-dashed p-4 text-center",
+            isDragging ? "border-ks-ink bg-ks-fog" : "border-ks-line-strong hover:bg-ks-fog",
             isProcessing ? "pointer-events-none opacity-60" : "",
           ].join(" ")}
         >
-          <div className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center">
-            {isProcessing ? (
-              <div className="w-5 h-5 rounded-full border-2 border-gray-300 border-t-brand-red animate-spin" />
-            ) : (
-              <Upload className="w-5 h-5 text-white/60" />
-            )}
-          </div>
-
-          <div className="text-center">
-            <p className="text-sm font-inter font-medium text-white">
-              {isProcessing ? "Processing…" : copy.drop}
-            </p>
-            <p className="text-xs text-white/50 mt-0.5">or click to browse</p>
-          </div>
-
-          <p className="text-xs text-white/60">PNG, JPG or SVG · Max 10MB</p>
-
-
+          <Upload size={22} aria-hidden="true" />
+          <span className="text-[15px] font-bold">
+            {isProcessing ? "Processing…" : copy.drop}{" "}
+            {!isProcessing && <span className="underline">browse</span>}
+          </span>
+          <span className="font-ks-mono text-[11px] uppercase text-ks-muted">PNG, JPG or SVG · Max 10 MB</span>
           <input
             ref={inputRef}
             type="file"
             accept=".png,.jpg,.jpeg,.svg,image/png,image/jpeg,image/svg+xml"
             onChange={handleInputChange}
             className="sr-only"
+            tabIndex={-1}
             aria-hidden="true"
           />
         </div>
       ) : (
-        /* Design preview */
-        <div className="flex items-center gap-3 p-3 bg-white/5 border border-white/10 rounded-2xl">
-          {/* Thumbnail */}
-          <div className="w-14 h-14 rounded-lg overflow-hidden border border-white/10 bg-white flex-shrink-0">
+        <div className="flex items-center gap-3 border border-ks-line p-3">
+          <div className="h-14 w-14 shrink-0 border border-ks-line bg-ks-paper">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={designImageURL}
-              alt={copy.alt}
-              className="w-full h-full object-contain"
-            />
+            <img src={designImageURL} alt={copy.alt} className="h-full w-full object-contain" />
           </div>
 
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-inter font-medium text-white truncate">
-              {designFileName || copy.title}
-            </p>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-semibold">{designFileName || copy.title}</p>
             <button
+              type="button"
               onClick={() => inputRef.current?.click()}
-              className="text-xs text-brand-red underline underline-offset-2 mt-0.5"
+              className="inline-flex min-h-ks-tap items-center text-sm font-bold text-ks-accent underline underline-offset-2"
             >
               Change
             </button>
           </div>
 
           <button
+            type="button"
             onClick={handleClear}
             aria-label={`Remove ${kind}`}
-            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors flex-shrink-0"
+            className="flex h-ks-tap w-ks-tap shrink-0 items-center justify-center border border-ks-line text-ks-ink hover:bg-ks-fog"
           >
-            <X className="w-4 h-4 text-white/60" />
+            <X size={16} aria-hidden="true" />
           </button>
 
           <input
@@ -176,32 +155,31 @@ export function UploadZone({ kind, hideTitle = false }: { kind: LayerKind; hideT
             accept=".png,.jpg,.jpeg,.svg,image/png,image/jpeg,image/svg+xml"
             onChange={handleInputChange}
             className="sr-only"
+            tabIndex={-1}
             aria-hidden="true"
           />
         </div>
       )}
 
       {kind === "design" && layer && (
-        <label className="flex items-center gap-2 text-sm font-inter text-white/80 cursor-pointer">
+        <label className="flex min-h-ks-tap cursor-pointer items-center gap-3 text-[15px] font-semibold">
           <input
             type="checkbox"
             checked={layer.full}
             onChange={(e) => {
               const full = e.target.checked;
-              const reset = full
-                ? { size: 1, ...areaCenter(FULL_AREA) }
-                : DEFAULT_LAYER.design[side];
+              const reset = full ? { size: 1, ...areaCenter(FULL_AREA) } : DEFAULT_LAYER.design[side];
               updateLayer(side, kind, { full, ...reset });
             }}
-            className="accent-brand-red w-4 h-4"
+            className="m-0 h-5 w-5 accent-ks-ink"
           />
           Full-size print (whole {side})
         </label>
       )}
 
       {layer && (
-        <label className="flex items-center gap-3 text-sm font-inter text-white/80">
-          <span className="w-9">Size</span>
+        <label className="flex min-h-ks-tap items-center gap-3 text-[15px]">
+          <span className="w-9 font-semibold">Size</span>
           <input
             type="range"
             min={MIN_LAYER_SIZE}
@@ -209,21 +187,16 @@ export function UploadZone({ kind, hideTitle = false }: { kind: LayerKind; hideT
             step={0.01}
             value={layer.size}
             onChange={(e) => updateLayer(side, kind, { size: Number(e.target.value) })}
-            className="flex-1 accent-brand-red"
+            className="flex-1 accent-ks-ink"
             aria-label={`${copy.title} size`}
           />
         </label>
       )}
 
-      {/* Error message */}
       {error && (
-        <div
-          role="alert"
-          className="flex items-start gap-2 p-3 bg-red-950/40 border border-red-500/40 rounded-lg"
-        >
-          <ImageIcon className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
-          <p className="text-xs text-red-300">{error}</p>
-        </div>
+        <p role="alert" className="border border-ks-accent p-3 text-sm text-ks-accent">
+          {error}
+        </p>
       )}
     </div>
   );

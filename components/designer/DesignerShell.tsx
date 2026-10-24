@@ -3,7 +3,6 @@
 import { useCallback } from "react";
 import { TShirtViewer } from "@/components/designer/TShirtViewer";
 import { DesignControls } from "@/components/designer/DesignControls";
-import { ViewToggle } from "@/components/designer/ViewToggle";
 import { LoadingOverlay } from "@/components/designer/LoadingOverlay";
 import { useDesignerStore } from "@/store/designerStore";
 
@@ -19,28 +18,15 @@ export function DesignerShell() {
   }, [setIsLoading]);
 
   return (
-    <div className="flex flex-col lg:flex-row gap-4 lg:gap-5 w-full h-full min-h-[560px]">
-      {/* 3D Viewer panel */}
-      <div className="relative flex-none h-[440px] lg:flex-1 lg:h-auto lg:min-h-0 rounded-3xl overflow-hidden border border-white/10">
-        <TShirtViewer
-          baseColor={baseColor}
-          layers={layers}
-          activeView={activeView}
-          onModelLoaded={handleModelLoaded}
-        />
+    <div className="flex flex-wrap items-start gap-6">
+      <section
+        aria-label="Shirt preview"
+        className="relative h-[27.5rem] min-w-0 flex-[999_1_40rem] bg-ks-fog lg:h-[47.5rem]"
+      >
+        <TShirtViewer baseColor={baseColor} layers={layers} activeView={activeView} onModelLoaded={handleModelLoaded} />
         {isLoading && <LoadingOverlay />}
-        <p className="hidden sm:block absolute top-4 left-5 text-xs font-inter text-white/50 pointer-events-none">
-          Drag to rotate · scroll or +/− to zoom
-        </p>
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-48 z-10">
-          <ViewToggle />
-        </div>
-      </div>
-
-      {/* Controls sidebar */}
-      <div className="w-full lg:w-80 xl:w-96 bg-[#14141f] rounded-3xl p-5 border border-white/10 flex flex-col min-h-0">
-        <DesignControls />
-      </div>
+      </section>
+      <DesignControls />
     </div>
   );
 }

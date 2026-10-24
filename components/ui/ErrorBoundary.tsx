@@ -32,27 +32,18 @@ export class ErrorBoundary extends React.Component<Props, State> {
   override render() {
     if (this.state.hasError) {
       return (
-        <div className="flex flex-col items-center justify-center h-full bg-gray-50 rounded-xl p-8 text-center gap-4">
-          <AlertTriangle className="w-12 h-12 text-yellow-500" />
+        <div role="alert" className="flex h-full flex-col items-center justify-center gap-4 bg-ks-fog p-8 text-center">
+          <AlertTriangle size={40} aria-hidden="true" />
           <div>
-            <h3 className="font-sora font-semibold text-gray-800 text-lg mb-1">
-              3D Preview Unavailable
-            </h3>
-            <p className="text-gray-500 text-sm">
+            <h3 className="ks-title mb-1 text-xl">3D preview unavailable</h3>
+            <p className="max-w-sm text-sm text-ks-body">
               Your browser may not support WebGL. Your design will still print correctly when you place an order.
             </p>
           </div>
-          {/* Fallback flat t-shirt SVG */}
-          <svg
-            viewBox="0 0 120 100"
-            className="w-32 h-28 text-gray-300"
-            fill="currentColor"
-          >
-            <path d="M30 10 L10 30 L25 35 L25 90 L95 90 L95 35 L110 30 L90 10 L75 20 Q60 28 45 20 Z" />
-          </svg>
           <button
+            type="button"
             onClick={() => this.setState({ hasError: false, errorMessage: "" })}
-            className="text-sm text-brand-red underline underline-offset-2"
+            className="inline-flex min-h-ks-tap items-center border-[1.5px] border-ks-ink px-5 font-bold hover:bg-ks-ink hover:text-ks-paper"
           >
             Try again
           </button>

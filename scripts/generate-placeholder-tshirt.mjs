@@ -1,6 +1,6 @@
 /**
  * Generates a realistic-looking t-shirt shaped GLB as a placeholder.
- * Uses raw GLB binary — no browser APIs required.
+ * Uses raw GLB binary - no browser APIs required.
  * Run: node scripts/generate-placeholder-tshirt.mjs
  *
  * UV layout (on 2048x2048 canvas):
@@ -114,7 +114,7 @@ const lShlBack  = [-0.30,  0.55, -D2];
 const lShlTop   = [-0.30,  0.60,  0.0];
 const lShlBot   = [-0.30,  0.50,  0.0];
 
-// Cuff points — angled down and out
+// Cuff points - angled down and out
 const lCuffX = -0.30 - slvLen * 0.85;
 const lCuffY =  0.55 - slvLen * 0.55;
 

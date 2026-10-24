@@ -17,6 +17,7 @@ export const useDesignerStore = create<DesignerStore>((set, get) => {
     layers: { front: {}, back: {} },
     activeView: "front",
     isLoading: true,
+    sizes: { S: 0, M: 0, L: 0, XL: 0, "2XL": 0 },
 
     setBaseColor: (color) => set({ baseColor: color }),
 
@@ -33,5 +34,7 @@ export const useDesignerStore = create<DesignerStore>((set, get) => {
     setActiveView: (view) => set({ activeView: view }),
 
     setIsLoading: (loading) => set({ isLoading: loading }),
+
+    setSize: (size, qty) => set((s) => ({ sizes: { ...s.sizes, [size]: Math.max(0, qty) } })),
   };
 });

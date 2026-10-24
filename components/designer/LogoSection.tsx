@@ -16,19 +16,17 @@ export function LogoSection() {
   };
 
   return (
-    <div className="space-y-3">
-      <label className="flex items-center gap-2 text-sm font-inter font-semibold text-white/60 uppercase tracking-wide cursor-pointer">
+    <div className="flex flex-col gap-3">
+      <label className="flex min-h-ks-tap cursor-pointer items-center gap-3 text-[15px] font-semibold">
         <input
           type="checkbox"
           checked={enabled}
           onChange={(e) => toggle(e.target.checked)}
-          className="accent-brand-red w-4 h-4"
+          className="m-0 h-5 w-5 accent-ks-ink"
         />
-        <span>
-          <span className="text-brand-red mr-1.5">2</span>Add a logo
-        </span>
+        Add a small logo (chest or sleeve)
       </label>
-      {enabled && <UploadZone kind="logo" hideTitle />}
+      {enabled && <UploadZone kind="logo" />}
     </div>
   );
 }

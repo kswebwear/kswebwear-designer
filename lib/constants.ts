@@ -78,3 +78,10 @@ export const CAMERA_POSITIONS = {
   front: [0, 0.1, 2.8] as [number, number, number],
   back: [0, 0.1, -2.8] as [number, number, number],
 };
+
+export const SIZES = ["S", "M", "L", "XL", "2XL"] as const;
+
+export const SITE_URL = "https://www.kswebwear.com.au";
+
+// Falls back to the business number when the env var is unset
+export const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "61410369036";

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { Check } from "lucide-react";
 import { useDesignerStore } from "@/store/designerStore";
 import { TSHIRT_COLOR_PRESETS } from "@/lib/constants";
 
@@ -32,52 +31,35 @@ export function ColorPicker() {
   );
 
   return (
-    <div className="space-y-3">
-      <h3 className="text-sm font-inter font-semibold text-white/60 uppercase tracking-wide">
-        <span className="text-brand-red mr-1.5">3</span>Shirt colour
-      </h3>
-
-      {/* Preset swatches */}
-      <div className="flex flex-wrap gap-3 p-1.5">
-        {TSHIRT_COLOR_PRESETS.map(({ label, hex }) => (
-          <button
-            key={hex}
-            title={label}
-            onClick={() => {
-              setBaseColor(hex);
-              setHexInput("");
-              setHexError(false);
-            }}
-            className={[
-              "relative w-10 h-10 rounded-full border-2 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-red focus-visible:ring-offset-2 focus-visible:ring-offset-[#14141f]",
-              baseColor === hex
-                ? "border-brand-red scale-110 shadow-md"
-                : "border-white/20 hover:scale-105 hover:border-white/60",
-            ].join(" ")}
-            style={{ backgroundColor: hex }}
-            aria-label={`Select ${label} color`}
-            aria-pressed={baseColor === hex}
-          >
-            {baseColor === hex && (
-              <span className="absolute inset-0 flex items-center justify-center">
-                <Check
-                  className="w-4 h-4 drop-shadow"
-                  style={{ color: isColorDark(hex) ? "#fff" : "#000" }}
-                  strokeWidth={3}
-                />
-              </span>
-            )}
-          </button>
-        ))}
+    <div className="flex flex-col gap-3">
+      <div className="flex flex-wrap gap-2 p-1">
+        {TSHIRT_COLOR_PRESETS.map(({ label, hex }) => {
+          const selected = baseColor === hex;
+          return (
+            <button
+              key={hex}
+              type="button"
+              title={label}
+              onClick={() => {
+                setBaseColor(hex);
+                setHexInput("");
+                setHexError(false);
+              }}
+              className={[
+                "relative h-ks-tap w-ks-tap border border-ks-line-strong p-0",
+                selected ? "ring-2 ring-ks-ink ring-offset-2 ring-offset-ks-paper" : "",
+              ].join(" ")}
+              style={{ backgroundColor: hex }}
+              aria-label={label}
+              aria-pressed={selected}
+            >
+            </button>
+          );
+        })}
       </div>
 
-      {/* Custom hex input */}
       <div className="flex items-center gap-2">
-        <div
-          className="w-8 h-8 rounded-full border border-white/20 flex-shrink-0 transition-colors"
-          style={{ backgroundColor: baseColor }}
-          aria-hidden="true"
-        />
+        <div className="h-ks-tap w-ks-tap shrink-0 border border-ks-line-strong" style={{ backgroundColor: baseColor }} aria-hidden="true" />
         <input
           type="text"
           value={hexInput || baseColor}
@@ -89,26 +71,18 @@ export function ColorPicker() {
           placeholder="#FFFFFF"
           maxLength={7}
           className={[
-            "flex-1 text-sm font-mono text-white px-3 py-1.5 border rounded-full focus:outline-none focus:ring-2 focus:ring-brand-red/50 transition-colors",
-            hexError ? "border-red-400 bg-red-950/40" : "border-white/15 bg-white/5",
+            "min-h-ks-tap flex-1 border bg-ks-paper px-3 font-ks-mono text-sm uppercase",
+            hexError ? "border-ks-accent" : "border-ks-line-strong",
           ].join(" ")}
-          aria-label="Custom hex color"
+          aria-label="Custom hex colour"
           aria-invalid={hexError}
         />
       </div>
       {hexError && (
-        <p className="text-xs text-red-500" role="alert">
-          Enter a valid hex color (e.g. #FF5733)
+        <p className="text-sm text-ks-accent" role="alert">
+          Enter a valid hex colour (e.g. #FF5733)
         </p>
       )}
     </div>
   );
-}
-
-function isColorDark(hex: string): boolean {
-  const clean = hex.replace("#", "");
-  const r = parseInt(clean.slice(0, 2), 16);
-  const g = parseInt(clean.slice(2, 4), 16);
-  const b = parseInt(clean.slice(4, 6), 16);
-  return (r * 299 + g * 587 + b * 114) / 1000 < 128;
 }

@@ -3,28 +3,27 @@
 import { useDesignerStore } from "@/store/designerStore";
 import type { ActiveView } from "@/types/designer";
 
+const views: { id: ActiveView; label: string }[] = [
+  { id: "front", label: "Front" },
+  { id: "back", label: "Back" },
+];
+
 export function ViewToggle() {
   const activeView = useDesignerStore((s) => s.activeView);
   const setActiveView = useDesignerStore((s) => s.setActiveView);
 
-  const views: { id: ActiveView; label: string }[] = [
-    { id: "front", label: "Front" },
-    { id: "back", label: "Back" },
-  ];
-
   return (
-    <div className="flex items-center gap-1 bg-black/50 backdrop-blur p-1 rounded-full w-full border border-white/10">
+    <div role="group" aria-label="Shirt side" className="flex border border-ks-line bg-ks-paper p-1">
       {views.map(({ id, label }) => (
         <button
           key={id}
+          type="button"
           onClick={() => setActiveView(id)}
-          className={[
-            "flex-1 py-2 px-4 rounded-full text-sm font-inter font-medium transition-all duration-200",
-            activeView === id
-              ? "bg-brand-red text-white shadow-sm"
-              : "text-white/70 hover:text-white",
-          ].join(" ")}
           aria-pressed={activeView === id}
+          className={[
+            "min-h-ks-tap min-w-[5.5rem] px-4 text-[15px] font-bold",
+            activeView === id ? "bg-ks-ink text-ks-paper" : "bg-transparent text-ks-ink hover:bg-ks-fog",
+          ].join(" ")}
         >
           {label}
         </button>

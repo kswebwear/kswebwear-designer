@@ -6,6 +6,7 @@ import { useGLTF } from "@react-three/drei";
 import { useThree, type ThreeEvent } from "@react-three/fiber";
 import * as THREE from "three";
 import type { ActiveView, Layer, LayerKind, SideLayers } from "@/types/designer";
+import { readToken } from "@/lib/tokens";
 import { areaOf, clampCenter, layerWidth, maxFitWidth, maxWidthAround } from "@/lib/printArea";
 
 interface TShirtModelProps {
@@ -91,6 +92,7 @@ function PrintLayer({
   const width = layerWidth(layer.size, aspect, area);
   const height = width / aspect;
   const center = clampCenter(layer.x, layer.y, width, height, area);
+  const handleColor = readToken("--ks-accent");
 
   // Pointer position on the shirt surface, in screen terms (+x right, +y up)
   const pointerOnShirt = (ev: PointerEvent) => {
@@ -168,7 +170,7 @@ function PrintLayer({
           onPointerOut={() => (gl.domElement.style.cursor = "")}
         >
           <circleGeometry args={[0.03, 24]} />
-          <meshBasicMaterial color="#e63946" depthTest={false} depthWrite={false} />
+          <meshBasicMaterial color={handleColor} depthTest={false} depthWrite={false} />
         </mesh>
       )}
     </group>

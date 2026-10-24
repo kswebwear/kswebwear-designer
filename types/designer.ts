@@ -1,5 +1,7 @@
 export type ActiveView = "front" | "back";
 
+export type SizeKey = "S" | "M" | "L" | "XL" | "2XL";
+
 export type LayerKind = "design" | "logo";
 
 export interface Layer {
@@ -45,6 +47,7 @@ export interface DesignerState {
   layers: Record<ActiveView, SideLayers>;
   activeView: ActiveView;
   isLoading: boolean;
+  sizes: Record<SizeKey, number>;
 }
 
 export interface DesignerActions {
@@ -54,4 +57,5 @@ export interface DesignerActions {
   clearLayer: (side: ActiveView, kind: LayerKind) => void;
   setActiveView: (view: ActiveView) => void;
   setIsLoading: (loading: boolean) => void;
+  setSize: (size: SizeKey, qty: number) => void;
 }

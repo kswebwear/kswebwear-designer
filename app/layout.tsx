@@ -1,16 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Sora, Inter } from "next/font/google";
+import { Archivo, IBM_Plex_Mono } from "next/font/google";
+import "../styles/tokens.css";
 import "./globals.css";
 
-const sora = Sora({
+const archivo = Archivo({
   subsets: ["latin"],
-  variable: "--font-sora",
+  axes: ["wdth"],
+  variable: "--font-archivo",
   display: "swap",
 });
 
-const inter = Inter({
+const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
-  variable: "--font-inter",
+  weight: ["400", "500"],
+  variable: "--font-plex-mono",
   display: "swap",
 });
 
@@ -22,7 +25,7 @@ export const metadata: Metadata = {
   authors: [{ name: "KS Webwear" }],
   openGraph: {
     title: "KS Webwear Designer",
-    description: "Design custom t-shirts in 3D — upload your artwork and see it live.",
+    description: "Design custom t-shirts in 3D. Upload your artwork and see it live.",
     type: "website",
   },
 };
@@ -30,7 +33,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#1A1A2E",
+  themeColor: "#FFFFFF",
 };
 
 export default function RootLayout({
@@ -39,7 +42,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${sora.variable} ${inter.variable}`}>
+    <html lang="en" className={`${archivo.variable} ${plexMono.variable}`}>
       <body>{children}</body>
     </html>
   );

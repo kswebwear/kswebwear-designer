@@ -1,13 +1,15 @@
 "use client";
 
-import { Suspense, useRef, useState } from "react";
-import { Download, ZoomIn, ZoomOut } from "lucide-react";
+import { Suspense, useMemo, useRef, useState } from "react";
+import { Download, Minus, Plus } from "lucide-react";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import { TShirtModel } from "@/components/designer/TShirtModel";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
+import { ViewToggle } from "@/components/designer/ViewToggle";
+import { readToken } from "@/lib/tokens";
 import type { ActiveView, SideLayers } from "@/types/designer";
 
 interface TShirtViewerProps {
@@ -57,24 +59,32 @@ const MAX_DISTANCE = 5;
 function Lights() {
   return (
     <>
-      {/* Key light — warm from upper-right */}
+      {/* Key light - warm from upper-right */}
       <directionalLight position={[3, 5, 3]} intensity={2.0} castShadow
         shadow-mapSize-width={1024} shadow-mapSize-height={1024}
         shadow-camera-near={0.1} shadow-camera-far={20}
         shadow-camera-left={-3} shadow-camera-right={3}
         shadow-camera-top={3} shadow-camera-bottom={-3}
       />
-      {/* Fill light — cool from upper-left */}
+      {/* Fill light - cool from upper-left */}
       <directionalLight position={[-3, 3, -2]} intensity={0.8} />
-      {/* Rim light — from behind */}
+      {/* Rim light - from behind */}
       <directionalLight position={[0, 1, -4]} intensity={0.3} color="#c8d8f0" />
-      {/* Ambient — soft overall fill */}
+      {/* Ambient - soft overall fill */}
       <ambientLight intensity={1.1} />
       {/* Subtle hemisphere: sky blue top, warm ground */}
       <hemisphereLight args={["#d0e8ff", "#f0e8d8", 0.4]} />
     </>
   );
 }
+
+function SceneBackground() {
+  const fog = useMemo(() => readToken("--ks-fog"), []);
+  return <color attach="background" args={[fog]} />;
+}
+
+const iconButton =
+  "flex h-ks-tap w-ks-tap items-center justify-center border border-ks-line bg-ks-paper text-ks-ink hover:bg-ks-fog";
 
 export function TShirtViewer({
   baseColor,
@@ -108,15 +118,15 @@ export function TShirtViewer({
   };
 
   return (
-    <div className="relative w-full h-full overflow-hidden bg-[#2b2d3a]">
+    <div className="relative h-full w-full overflow-hidden bg-ks-fog">
       <ErrorBoundary>
         <Canvas
-          camera={{ position: [0, 0, 3.6], fov: 45 }}
+          camera={{ position: [0, -0.25, 3.6], fov: 45 }}
           shadows
           gl={{ antialias: true, alpha: false }}
           dpr={[1, 2]}
         >
-          <color attach="background" args={["#2b2d3a"]} />
+          <SceneBackground />
 
           <ExportBridge exporterRef={exporterRef} />
           <Lights />
@@ -133,6 +143,7 @@ export function TShirtViewer({
           <OrbitControls
             ref={controlsRef}
             enablePan={false}
+            target={[0, -0.25, 0]}
             enableZoom={true}
             minDistance={MIN_DISTANCE}
             maxDistance={MAX_DISTANCE}
@@ -144,14 +155,31 @@ export function TShirtViewer({
           />
         </Canvas>
       </ErrorBoundary>
-      <div className="absolute bottom-4 right-4 z-10">
+      <p className="ks-label pointer-events-none absolute left-5 top-5 hidden text-ks-muted sm:block">
+        Drag to rotate · scroll to zoom
+      </p>
+      <div className="absolute right-3 top-3 z-10 flex gap-2">
+        {[
+          { label: "Zoom in", Icon: Plus, factor: 0.8 },
+          { label: "Zoom out", Icon: Minus, factor: 1.25 },
+        ].map(({ label, Icon, factor }) => (
+          <button key={label} type="button" onClick={() => zoom(factor)} aria-label={label} className={iconButton}>
+            <Icon size={18} aria-hidden="true" />
+          </button>
+        ))}
+      </div>
+      <div className="absolute bottom-5 left-1/2 z-10 -translate-x-1/2">
+        <ViewToggle />
+      </div>
+      <div className="absolute bottom-5 right-5 z-10">
         {menuOpen && (
-          <div className="absolute bottom-12 right-0 w-28 rounded-2xl bg-black/80 backdrop-blur border border-white/10 p-1">
+          <div className="absolute bottom-12 right-0 w-28 border border-ks-line bg-ks-paper p-1">
             {EXPORT_FORMATS.map((format) => (
               <button
                 key={format.ext}
+                type="button"
                 onClick={() => download(format)}
-                className="w-full text-left px-3 py-2 rounded-xl text-sm font-inter text-white/80 hover:bg-white/10 hover:text-white"
+                className="flex min-h-ks-tap w-full items-center px-3 text-left text-[15px] font-semibold hover:bg-ks-fog"
               >
                 {format.label}
               </button>
@@ -159,29 +187,15 @@ export function TShirtViewer({
           </div>
         )}
         <button
+          type="button"
           onClick={() => setMenuOpen((open) => !open)}
-          aria-label="Download image"
+          aria-label="Download mock-up"
           aria-expanded={menuOpen}
-          className="h-10 px-3 sm:px-4 flex items-center gap-2 rounded-full bg-black/50 backdrop-blur border border-white/10 text-sm font-inter text-white/80 hover:text-white hover:bg-black/70 transition-colors"
+          className="flex min-h-ks-tap items-center gap-2 border-[1.5px] border-ks-ink bg-ks-paper px-3 text-[15px] font-bold text-ks-ink hover:bg-ks-fog sm:px-4"
         >
-          <Download className="w-4 h-4" />
-          <span className="hidden sm:inline">Download</span>
+          <Download size={16} aria-hidden="true" />
+          <span className="hidden sm:inline">Download mock-up</span>
         </button>
-      </div>
-      <div className="absolute top-4 right-4 z-10 flex flex-col gap-2">
-        {[
-          { label: "Zoom in", Icon: ZoomIn, factor: 0.8 },
-          { label: "Zoom out", Icon: ZoomOut, factor: 1.25 },
-        ].map(({ label, Icon, factor }) => (
-          <button
-            key={label}
-            onClick={() => zoom(factor)}
-            aria-label={label}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-black/50 backdrop-blur border border-white/10 text-white/80 hover:text-white hover:bg-black/70 transition-colors"
-          >
-            <Icon className="w-5 h-5" />
-          </button>
-        ))}
       </div>
     </div>
   );
