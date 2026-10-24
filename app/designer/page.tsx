@@ -13,12 +13,9 @@ export default function DesignerPage() {
       <header className="border-b border-white/10 bg-[#0b0b12]/90 backdrop-blur-sm sticky top-0 z-20">
         <div className="section-container py-3 flex items-center justify-between gap-4">
           <a href="https://www.kswebwear.com.au" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center">
-              <span className="text-brand-navy font-sora font-extrabold text-sm">KS</span>
-            </div>
-            <span className="font-sora font-bold">
-              KS Webwear <span className="hidden sm:inline text-white/50 font-medium ml-1">Designer</span>
-            </span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/logo.png" alt="KS Web & Wear" className="h-12 w-auto -my-1 invert" />
+            <span className="font-sora font-bold text-white/70">Designer</span>
           </a>
           <nav className="hidden md:flex items-center gap-7 text-sm font-inter text-white/80">
             <a href="https://www.kswebwear.com.au/services" className="hover:text-white transition-colors">Services</a>
