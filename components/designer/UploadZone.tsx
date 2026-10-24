@@ -120,7 +120,7 @@ export function UploadZone() {
             <p className="text-xs text-white/50 mt-0.5">or click to browse</p>
           </div>
 
-          <p className="text-xs text-white/40">PNG, JPG or SVG · Max 10MB</p>
+          <p className="text-xs text-white/60">PNG, JPG or SVG · Max 10MB</p>
 
 
           <input

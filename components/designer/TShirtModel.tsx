@@ -1,5 +1,6 @@
 "use client";
 
+import { useDesignerStore } from "@/store/designerStore";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
@@ -14,6 +15,7 @@ interface TShirtModelProps {
 
 // Print area, in model units (shirt is ~1.8 wide, ~1.9 tall)
 const PRINT_WIDTH = 0.7;
+const SIZE_FACTOR = { small: 0.5, medium: 0.75, large: 1 } as const;
 const PRINT_MAX_HEIGHT = 0.8;
 const PRINT_CENTER_Y = 0.2;
 const SURFACE_OFFSET = 0.004;
@@ -70,6 +72,7 @@ function DesignPlane({
   side: ActiveView;
 }) {
   const texture = useDesignTexture(url);
+  const printSize = useDesignerStore((s) => s.printSize);
   const dir = side === "front" ? 1 : -1;
 
   // Find where the shirt surface sits at the print centre so the plane hugs it
@@ -86,7 +89,7 @@ function DesignPlane({
 
   const img = texture.image as { width: number; height: number };
   const aspect = img.width / img.height;
-  const width = Math.min(PRINT_WIDTH, PRINT_MAX_HEIGHT * aspect);
+  const width = Math.min(PRINT_WIDTH, PRINT_MAX_HEIGHT * aspect) * SIZE_FACTOR[printSize];
   const height = width / aspect;
 
   return (

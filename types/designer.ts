@@ -1,5 +1,7 @@
 export type ActiveView = "front" | "back";
 
+export type PrintSize = "small" | "medium" | "large";
+
 export interface ColorPreset {
   label: string;
   hex: string;
@@ -29,6 +31,7 @@ export interface DesignerState {
   designImageURL: string | null;
   designFileName: string | null;
   activeView: ActiveView;
+  printSize: PrintSize;
   isLoading: boolean;
 }
 
@@ -36,6 +39,7 @@ export interface DesignerActions {
   setBaseColor: (color: string) => void;
   setDesignImage: (url: string | null, fileName: string | null) => void;
   setActiveView: (view: ActiveView) => void;
+  setPrintSize: (size: PrintSize) => void;
   setIsLoading: (loading: boolean) => void;
   clearDesign: () => void;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { ColorPicker } from "@/components/designer/ColorPicker";
+import { PrintSize } from "@/components/designer/PrintSize";
 import { UploadZone } from "@/components/designer/UploadZone";
 import { MessageCircle } from "lucide-react";
 import { useDesignerStore } from "@/store/designerStore";
@@ -12,12 +13,13 @@ export function DesignControls() {
   const baseColor = useDesignerStore((s) => s.baseColor);
   const designFileName = useDesignerStore((s) => s.designFileName);
   const activeView = useDesignerStore((s) => s.activeView);
+  const printSize = useDesignerStore((s) => s.printSize);
 
   const colourName = TSHIRT_COLOR_PRESETS.find((c) => c.hex === baseColor)?.label ?? baseColor;
 
   const handleWhatsApp = () => {
     if (!WHATSAPP_NUMBER) return;
-    const details = [`Shirt colour: ${colourName}`, designFileName ? `Print position: ${activeView}` : null, designFileName ? `Design file: ${designFileName}` : null]
+    const details = [`Shirt colour: ${colourName}`, designFileName ? `Print: ${activeView}, ${printSize}` : null, designFileName ? `Design file: ${designFileName}` : null]
       .filter(Boolean)
       .join("\n");
     const message = encodeURIComponent(
@@ -27,15 +29,12 @@ export function DesignControls() {
   };
 
   return (
-    <div className="flex flex-col gap-5 h-full overflow-y-auto">
+    <div className="flex flex-col gap-4 h-full overflow-y-auto">
       {/* Header */}
       <div>
         <h2 className="font-sora font-bold text-xl text-white">
           Customise
         </h2>
-        <p className="text-sm text-white/60 font-inter mt-1">
-          Preview your artwork on a 3D tee, then order on WhatsApp.
-        </p>
       </div>
 
       {/* Upload zone */}
@@ -46,6 +45,13 @@ export function DesignControls() {
 
       {/* Color picker */}
       <ColorPicker />
+
+      {designFileName && (
+        <>
+          <div className="h-px bg-white/10" />
+          <PrintSize />
+        </>
+      )}
 
       {/* Spacer */}
       <div className="flex-1" />
@@ -72,7 +78,7 @@ export function DesignControls() {
           </a>
         )}
 
-        <p className="text-center text-xs text-white/40 font-inter max-lg:hidden">
+        <p className="text-center text-xs text-white/60 font-inter max-lg:hidden">
           Your design stays on your device. Minimum 2 shirts.
         </p>
       </div>

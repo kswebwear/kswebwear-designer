@@ -10,6 +10,7 @@ export const useDesignerStore = create<DesignerStore>((set) => ({
   designImageURL: null,
   designFileName: null,
   activeView: "front",
+  printSize: "large",
   isLoading: true,
 
   // Actions
@@ -19,6 +20,8 @@ export const useDesignerStore = create<DesignerStore>((set) => ({
     set({ designImageURL: url, designFileName: fileName }),
 
   setActiveView: (view: ActiveView) => set({ activeView: view }),
+
+  setPrintSize: (size) => set({ printSize: size }),
 
   setIsLoading: (loading: boolean) => set({ isLoading: loading }),
 
