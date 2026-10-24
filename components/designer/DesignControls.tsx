@@ -4,16 +4,20 @@ import { ColorPicker } from "@/components/designer/ColorPicker";
 import { UploadZone } from "@/components/designer/UploadZone";
 import { MessageCircle } from "lucide-react";
 import { useDesignerStore } from "@/store/designerStore";
+import { TSHIRT_COLOR_PRESETS } from "@/lib/constants";
 
 const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
 
 export function DesignControls() {
   const baseColor = useDesignerStore((s) => s.baseColor);
   const designFileName = useDesignerStore((s) => s.designFileName);
+  const activeView = useDesignerStore((s) => s.activeView);
+
+  const colourName = TSHIRT_COLOR_PRESETS.find((c) => c.hex === baseColor)?.label ?? baseColor;
 
   const handleWhatsApp = () => {
     if (!WHATSAPP_NUMBER) return;
-    const details = [`Shirt colour: ${baseColor}`, designFileName ? `Design file: ${designFileName}` : null]
+    const details = [`Shirt colour: ${colourName}`, designFileName ? `Print position: ${activeView}` : null, designFileName ? `Design file: ${designFileName}` : null]
       .filter(Boolean)
       .join("\n");
     const message = encodeURIComponent(
