@@ -1,3 +1,6 @@
+// React dev mode needs eval() for debugging; production never does
+const isDev = process.env.NODE_ENV !== "production";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   distDir: process.env.NEXT_DIST_DIR || ".next",
@@ -31,7 +34,8 @@ const nextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline'",
+              // wasm-unsafe-eval: Draco decoder for the GLB model compiles WebAssembly
+              `script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'${isDev ? " 'unsafe-eval'" : ""}`,
               // Three.js / Draco decoder spawns workers from blob: URLs
               "worker-src 'self' blob:",
               "style-src 'self' 'unsafe-inline'",
